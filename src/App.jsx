@@ -1,9 +1,3 @@
-/*
-   Game
-    -> Board
-        -> Square
-    -> Hostory
-*/
 import { useState } from "react";
 import Board from "./components/Board.jsx";
 
@@ -27,7 +21,7 @@ export default function Game() {
         setXIsNext(move % 2 === 0);
     }
 
-    const moves = history.map((squares, move) => {
+    const moves = history?.map((squares, move) => {
         let description;
 
         if( move > 0 ) {
@@ -45,17 +39,34 @@ export default function Game() {
         )
     })
 
-    return(
-        <div className="flex justify-center p-4">
-            <div className="mr-16">
-                <Board
-                    xIsNext={xIsNext}
-                    squares={currentSquares}
-                    onPlay={handlePlay}/>
-            </div>
+    function restartGame() {
+        setHistory([Array(9)?.fill(null)]);
+        setXIsNext(true);
+        setCurrentMove(0);
+    }
 
-            <div>
-                <ol className="border border-gray-400 p-1 text-lg">{ moves }</ol>
+    return(
+        <div className="bg-[#E4E4E4] min-w-screen min-h-screen flex items-center justify-center">
+            <div className="max-w-[1200px] max-h-[200px] flex items-center justify-center p-4">
+                <div className="mr-16">
+                    <Board
+                        xIsNext={xIsNext}
+                        squares={currentSquares}
+                        onPlay={handlePlay}/>
+                </div>
+
+                <div className="min-w-screen min-h-full flex flex-col items-center justify-between gap-6">
+                    <p className="text-[#212121] text-2xl font-bold font-['Inter']">History</p>
+
+                    <ol className="w-full border border-gray-400 p-1 text-lg">{moves}</ol>
+
+                    <button
+                        className="w-32 bg-[#212121] flex items-center justify-center rounded-md gap-[15px] text-[#EAEAEA] text-center text-xl font-bold font-['Inter']"
+                        onClick={restartGame}
+                    >
+                        Restart
+                    </button>
+                </div>
             </div>
         </div>
     )
